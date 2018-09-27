@@ -12,6 +12,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/src/main/java" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -47,5 +48,8 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.flywaydb:flyway-core:5.1.4" level="project" />
+    <orderEntry type="library" name="Maven: org.jooq:jooq:3.8.4" level="project" />
+    <orderEntry type="library" name="Maven: org.jooq:jooq-meta:3.8.4" level="project" />
+    <orderEntry type="library" name="Maven: org.jooq:jooq-codegen:3.8.4" level="project" />
   </component>
 </module>
