@@ -13,6 +13,12 @@ public class User {
     @SerializedName("elo_rating")
     private double eloRating;
 
+    public User(int userId, int groupId, double eloRating) {
+        this.userId = userId;
+        this.groupId = groupId;
+        this.eloRating = eloRating;
+    }
+
     public int getUserId() {
         return userId;
     }
