@@ -24,7 +24,7 @@ public class JooqConfig {
     private final DataSource dataSource;
 
     @Autowired
-    public JooqConfig(@Qualifier("dataSource") DataSource dataSource) {
+    public JooqConfig(final @Qualifier("dataSource") DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
