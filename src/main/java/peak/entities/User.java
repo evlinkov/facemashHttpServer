@@ -1,11 +1,16 @@
 package peak.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
 
+    @SerializedName("user_id")
     private int userId;
 
+    @SerializedName("group_id")
     private int groupId;
 
+    @SerializedName("elo_rating")
     private double eloRating;
 
     public int getUserId() {
