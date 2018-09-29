@@ -12,6 +12,9 @@ import peak.entities.*;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,7 +100,11 @@ public class UserServiceImpl implements UserService {
     @Scheduled(initialDelay = 5 * MINUTE, fixedDelay = 5 * MINUTE)
     public void printLog() throws Exception {
         String timestamp = String.valueOf(new Timestamp(System.currentTimeMillis()).getTime());
-        PrintWriter writer = new PrintWriter(logPath + logFileName + timestamp + ".txt", "UTF-8");
+
+        String file = logPath + logFileName + timestamp + ".txt";
+        Path path = Paths.get(file);
+        Files.createDirectories(path.getParent());
+        PrintWriter writer = new PrintWriter(file, "UTF-8");
 
         int n = logs.size();
         for (int i = 0; i < n; ++i) {
