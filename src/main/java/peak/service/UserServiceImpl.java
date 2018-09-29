@@ -87,10 +87,11 @@ public class UserServiceImpl implements UserService {
                 !vote.isVote()));
     }
 
+    @Override
     @Scheduled(initialDelay = 5 * MINUTE, fixedDelay = 5 * MINUTE)
-    public synchronized void printLog() throws Exception {
+    public void printLog() throws Exception {
         String timestamp = String.valueOf(new Timestamp(System.currentTimeMillis()).getTime());
-        PrintWriter writer = new PrintWriter(logPath + logFileName + timestamp, "UTF-8");
+        PrintWriter writer = new PrintWriter(logPath + logFileName + timestamp + ".txt", "UTF-8");
 
         int n = logs.size();
         for (int i = 0; i < n; ++i) {

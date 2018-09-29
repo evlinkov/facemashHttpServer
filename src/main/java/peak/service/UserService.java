@@ -10,4 +10,6 @@ public interface UserService {
 
     void vote(Vote vote);
 
+    void printLog() throws Exception;
+
 }
