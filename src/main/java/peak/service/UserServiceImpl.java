@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peak.dao.UserDao;
-import peak.entities.Client;
-import peak.entities.RatingUsersResponse;
-import peak.entities.User;
-import peak.entities.Vote;
+import peak.entities.*;
 import peak.entities.tables.Users;
 
 import javax.annotation.PostConstruct;
@@ -41,14 +38,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RatingUsersResponse getUsers(int groupId, List<Integer> userIds) {
+    public RatingUsersResponse getUsers(RatingUsersRequest ratingUsersRequest) {
         List<User> users = new ArrayList<>();
-        for (Integer userId : userIds) {
-            Client client = new Client(userId, groupId);
+        for (Integer userId : ratingUsersRequest.getUsersId()) {
+            Client client = new Client(userId, ratingUsersRequest.getGroupId());
             if (!clients.containsKey(client)) {
                 addUser(client);
             }
-            users.add(new User(userId, groupId, clients.get(client)));
+            users.add(new User(userId, ratingUsersRequest.getGroupId(), clients.get(client)));
         }
         RatingUsersResponse ratingUsersResponse = new RatingUsersResponse();
         ratingUsersResponse.setUsers(users);
