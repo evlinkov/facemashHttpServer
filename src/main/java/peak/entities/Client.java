@@ -1,9 +1,13 @@
 package peak.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Client {
 
+    @SerializedName("user_id")
     private int userId;
 
+    @SerializedName("group_id")
     private int groupId;
 
     public Client(int userId, int groupId) {

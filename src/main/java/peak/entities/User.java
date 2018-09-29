@@ -1,17 +1,25 @@
 package peak.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
 
     @SerializedName("user_id")
+    @JsonProperty("user_id")
     private int userId;
 
     @SerializedName("group_id")
+    @JsonProperty("group_id")
     private int groupId;
 
     @SerializedName("elo_rating")
+    @JsonProperty("elo_rating")
     private double eloRating;
+
+    public User() {
+
+    }
 
     public User(int userId, int groupId, double eloRating) {
         this.userId = userId;

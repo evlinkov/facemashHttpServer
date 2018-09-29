@@ -1,24 +1,34 @@
 package peak.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 public class Vote {
 
     @SerializedName("user_id")
+    @JsonProperty("user_id")
     private int userId;
 
     @SerializedName("left_user_id")
+    @JsonProperty("left_user_id")
     private int leftUserId;
 
     @SerializedName("right_user_id")
+    @JsonProperty("right_user_id")
     private int rightUserId;
 
     @SerializedName("group_id")
+    @JsonProperty("group_id")
     private int groupId;
 
     // 0 - победил первый, 1 - победил второй
     @SerializedName("vote")
+    @JsonProperty("vote")
     private boolean vote;
+
+    public Vote() {
+
+    }
 
     public int getUserId() {
         return userId;

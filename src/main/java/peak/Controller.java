@@ -10,9 +10,6 @@ import peak.entities.RatingUsersResponse;
 import peak.entities.Vote;
 import peak.service.UserService;
 
-/**
- * Created by evgenylinkov on 29.09.18.
- */
 @RestController
 @RequestMapping("/facemash")
 public class Controller {
@@ -25,7 +22,7 @@ public class Controller {
     }
 
     @RequestMapping(value = "/get/users", method = RequestMethod.POST,
-        produces = "application/json", consumes = "application/json")
+            produces = "application/json", consumes = "application/json")
     public RatingUsersResponse getUsers(@RequestBody RatingUsersRequest ratingUsersRequest) {
         return userService.getUsers(ratingUsersRequest);
     }

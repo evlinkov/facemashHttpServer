@@ -1,5 +1,6 @@
 package peak.service;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +26,8 @@ public class UserServiceImpl implements UserService {
     private final static int COEF = 16;
     private final static int SECOND = 1000;
     private final static int MINUTE = 60 * SECOND;
+    private final static String VOTE = "VOTE";
+    private final static String ADD = "ADD";
 
     private final UserDao userDao;
     private final Map<Client,Double> clients = new ConcurrentHashMap<>();
@@ -35,6 +38,7 @@ public class UserServiceImpl implements UserService {
     @Value("${log.file.name}")
     private String logFileName;
 
+    private Gson gson = new Gson();
     private List<String> logs = Collections.synchronizedList(new ArrayList<>());
 
     @Autowired
@@ -81,10 +85,12 @@ public class UserServiceImpl implements UserService {
         double leftEloRating = clients.get(leftClient);
         double rightEloRating = clients.get(rightClient);
 
-        clients.put(leftClient, getUpdatedEloRate(leftEloRating, rightEloRating,
+        clients.put(leftClient, leftEloRating + getUpdatedEloRate(leftEloRating, rightEloRating,
                 vote.isVote()));
-        clients.put(rightClient, getUpdatedEloRate(rightEloRating, leftEloRating,
+        clients.put(rightClient, rightEloRating + getUpdatedEloRate(rightEloRating, leftEloRating,
                 !vote.isVote()));
+
+        logs.add(VOTE + ":" + gson.toJson(vote));
     }
 
     @Override
@@ -112,6 +118,7 @@ public class UserServiceImpl implements UserService {
             return;
         }
         clients.put(client, DEFAULT_ELO_RATING);
+        logs.add(ADD + ":" + gson.toJson(client));
     }
 
     private double calculateEloRate(double left, double right) {
