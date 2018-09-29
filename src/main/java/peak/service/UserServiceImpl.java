@@ -1,6 +1,7 @@
 package peak.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peak.dao.UserDao;
@@ -21,6 +22,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final Map<Client,Double> clients = new ConcurrentHashMap<>();
+
+    @Value("${log.path}")
+    private String logPath;
 
     @Autowired
     public UserServiceImpl(final UserDao userDao) {
