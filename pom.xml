@@ -63,7 +63,7 @@
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
-        
+
     </dependencies>
 
     <build>
