@@ -2,14 +2,18 @@ package peak.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peak.dao.UserDao;
 import peak.entities.*;
-import peak.entities.tables.Users;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,12 +23,19 @@ public class UserServiceImpl implements UserService {
 
     private final static double DEFAULT_ELO_RATING = 1500;
     private final static int COEF = 16;
+    private final static int SECOND = 1000;
+    private final static int MINUTE = 60 * SECOND;
 
     private final UserDao userDao;
     private final Map<Client,Double> clients = new ConcurrentHashMap<>();
 
     @Value("${log.path}")
     private String logPath;
+
+    @Value("${log.file.name}")
+    private String logFileName;
+
+    private List<String> logs = Collections.synchronizedList(new ArrayList<>());
 
     @Autowired
     public UserServiceImpl(final UserDao userDao) {
@@ -74,6 +85,25 @@ public class UserServiceImpl implements UserService {
                 vote.isVote()));
         clients.put(rightClient, getUpdatedEloRate(rightEloRating, leftEloRating,
                 !vote.isVote()));
+    }
+
+    @Scheduled(initialDelay = 5 * MINUTE, fixedDelay = 5 * MINUTE)
+    public synchronized void printLog() throws Exception {
+        String timestamp = String.valueOf(new Timestamp(System.currentTimeMillis()).getTime());
+        PrintWriter writer = new PrintWriter(logPath + logFileName + timestamp, "UTF-8");
+
+        int n = logs.size();
+        for (int i = 0; i < n; ++i) {
+            writer.println(logs.get(i));
+        }
+        logs.subList(0, n).clear();
+
+        writer.close();
+    }
+
+    @PreDestroy
+    public void preDestroy() throws Exception {
+        printLog();
     }
 
     private synchronized void addUser(Client client) {
