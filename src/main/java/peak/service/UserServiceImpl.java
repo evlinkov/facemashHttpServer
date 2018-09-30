@@ -11,6 +11,7 @@ import peak.entities.*;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,8 +39,11 @@ public class UserServiceImpl implements UserService {
     @Value("${log.path}")
     private String logPath;
 
-    @Value("${log.file.name}")
-    private String logFileName;
+    @Value("${log.file.name.first}")
+    private String logFileNameFirst;
+
+    @Value("${log.file.name.final}")
+    private String logFileNameFinal;
 
     private Gson gson = new Gson();
     private List<String> logs = Collections.synchronizedList(new ArrayList<>());
@@ -101,7 +105,7 @@ public class UserServiceImpl implements UserService {
     public void printLog() throws Exception {
         String timestamp = String.valueOf(new Timestamp(System.currentTimeMillis()).getTime());
 
-        String file = logPath + logFileName + timestamp + ".txt";
+        String file = logPath + logFileNameFirst + timestamp + ".txt";
         Path path = Paths.get(file);
         Files.createDirectories(path.getParent());
         PrintWriter writer = new PrintWriter(file, "UTF-8");
@@ -113,6 +117,7 @@ public class UserServiceImpl implements UserService {
         logs.subList(0, n).clear();
 
         writer.close();
+        rename(timestamp);
     }
 
     @PreDestroy
@@ -130,6 +135,12 @@ public class UserServiceImpl implements UserService {
 
     private double calculateEloRate(double left, double right) {
         return 1.0 / (1.0 + Math.pow(10, (right - left) / 400));
+    }
+
+    private void rename(String timestamp) {
+        File file = new File(logPath + logFileNameFirst + timestamp + ".txt");
+        File newFile = new File(logPath + logFileNameFinal + timestamp + ".txt");
+        file.renameTo(newFile);
     }
 
     private double getUpdatedEloRate(double left, double right, boolean vote) {
